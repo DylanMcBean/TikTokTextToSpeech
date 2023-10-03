@@ -14,7 +14,7 @@ A simple Python script that utilizes the TikTok TTS (Text-to-Speech) API to gene
 1. Clone the repository:
 
 ```sh
-git clone https://github.com/DylanMcBean/TikTokTextToSpech.git
+git clone https://github.com/DylanMcBean/TikTokTextToSpeach.git
 cd TikTokTextToSpeach
 ```
 
