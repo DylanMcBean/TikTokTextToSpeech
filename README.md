@@ -14,8 +14,8 @@ A comprehensive Python tool that harnesses the power of TikTok's TTS (Text-to-Sp
 1. Clone the repository:
 
 ```sh
-git clone https://github.com/DylanMcBean/TikTokTextToSpeach.git
-cd TikTokTextToSpeach
+git clone https://github.com/DylanMcBean/TikTokTextToSpeech.git
+cd TikTokTextToSpeech
 ```
 
 2. Set up a virtual environment (optional but highly recommended):
