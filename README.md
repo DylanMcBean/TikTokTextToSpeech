@@ -1,13 +1,13 @@
 # TikTok TTS Audio Generation
 
-A simple Python script that utilizes the TikTok TTS (Text-to-Speech) API to generate audio files from the text provided in a `.txt` file. The tool then combines all the generated audio snippets into a single `.mp3` file.
+A comprehensive Python tool that harnesses the power of TikTok's TTS (Text-to-Speech) API to produce audio files derived from provided text in a `.txt` file format. Following the text-to-audio conversion, the tool seamlessly stitches all the generated audio segments into a single `.mp3` audio file.
 
 ## Features
-- Takes text from a provided `.txt` file.
-- Splits the text into sections, ensuring each is within the character limit for the TTS API.
-- Downloads audio snippets for each section using TikTok's TTS API.
-- Combines all snippets into a single, continuous `.mp3` file.
-- Provides progress tracking using a progress bar.
+- Sources text directly from a designated `.txt` file.
+- Intelligently segments the text to align with the character constraints of the TTS API.
+- Leverages TikTok's TTS API to procure audio segments for each split section of text.
+- Seamlessly amalgamates all these audio segments into one unified `.mp3` file.
+- Enhances user experience by offering a real-time progress bar to track the conversion status.
 
 ## Installation
 
@@ -18,14 +18,14 @@ git clone https://github.com/DylanMcBean/TikTokTextToSpeach.git
 cd TikTokTextToSpeach
 ```
 
-2. Set up a virtual environment (optional but recommended):
+2. Set up a virtual environment (optional but highly recommended):
 
 ```sh
 python3 -m venv venv
 source venv/bin/activate  # On Windows, use: venv\Scripts\activate
 ```
 
-3. Install required dependencies:
+3. Install necessary dependencies:
 
 ```sh
 pip install -r requirements.txt
@@ -33,16 +33,25 @@ pip install -r requirements.txt
 
 ## Usage
 
-1. Prepare a `.txt` file with the text you wish to convert to speech.
+1. Prepare a `.txt` file with the text content you're keen to transform into speech.
 
-2. Run the script by passing the path to the `.txt` file:
+2. Execute the script, supplying the path of your `.txt` file:
 
 ```sh
 python main.py path/to/your/textfile.txt
 ```
 
-3. After execution, you'll find a file named `combined_audio.mp3` in the directory.
+Optionally, you can specify the output filename:
+
+```sh
+python main.py path/to/your/textfile.txt desired_output_filename.mp3
+```
+
+3. Post execution, locate the resulting audio file (defaulted to `processed_audio.mp3` if no name was provided) in the main directory.
+
+## Note on Voice Selection
+Upon execution, the script prompts the user to select from a list of diverse voice options, ranging from regional accents to iconic fictional characters!
 
 ## Extra
 
-1. You will also need to have ffmpeg installed, and have `ffprobe` in the same folder as the script or in `PATH`
+1. For the tool's seamless operation, ensure `ffmpeg` is installed. Additionally, `ffprobe` should either reside in the same directory as the script or be accessible from the `PATH`.
