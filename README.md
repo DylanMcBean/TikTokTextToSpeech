@@ -42,3 +42,7 @@ python main.py path/to/your/textfile.txt
 ```
 
 3. After execution, you'll find a file named `combined_audio.mp3` in the directory.
+
+## Extra
+
+1. You will also need to have ffmpeg installed, and have `ffprobe` in the same folder as the script or in `PATH`
