@@ -31,8 +31,6 @@ source venv/bin/activate  # On Windows, use: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-_Note: The `requirements.txt` file should be created by running `pip freeze > requirements.txt` after installing the necessary packages._
-
 ## Usage
 
 1. Prepare a `.txt` file with the text you wish to convert to speech.
