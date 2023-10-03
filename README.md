@@ -18,8 +18,6 @@ git clone https://github.com/DylanMcBean/TikTokTextToSpech.git
 cd TikTok-TTS-Generator
 ```
 
-Replace `DylanMcBean` with your actual GitHub username.
-
 2. Set up a virtual environment (optional but recommended):
 
 ```sh
