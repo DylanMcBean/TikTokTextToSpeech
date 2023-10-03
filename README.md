@@ -15,7 +15,7 @@ A simple Python script that utilizes the TikTok TTS (Text-to-Speech) API to gene
 
 ```sh
 git clone https://github.com/DylanMcBean/TikTokTextToSpech.git
-cd TikTok-TTS-Generator
+cd TikTokTextToSpeach
 ```
 
 2. Set up a virtual environment (optional but recommended):
