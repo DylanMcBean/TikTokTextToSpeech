@@ -121,15 +121,20 @@ class TextToAudioConverter:
         return sections
 
     def fetch_audio_for_section(self, section: str, retries: int = 3) -> bytes:
-        for _ in range(retries):
+        for attempt in range(retries):
             try:
                 request = requests.post(self.API_ENDPOINT, json={
                                         "text": section, "voice": self.VOICE})
+                request.raise_for_status()  # Check if the request was successful
                 response = request.json()
-                if response.get('data'):
+                if 'data' in response:
                     return base64.b64decode(response['data'])
-            except:
-                pass # lets hgope this failed audio clip is not too noticable, hopefully should not happen tho
+                else:
+                    print(f"Unexpected response format: {response}")
+            except requests.RequestException as e:
+                print(f"Request failed: {e}")
+            except KeyError as e:
+                print(f"Response parsing failed: {e}")
             time.sleep(1)
         raise ValueError(f"Failed to fetch audio for section: {section}")
 
@@ -190,19 +195,23 @@ class TextToAudioConverter:
         for sentence in tqdm(sentences, desc="Processing", ncols=100):
             sentence_audio = AudioSegment.empty()
             for section in self.get_sections_from_sentence(sentence):
-                audio_bytes = self.fetch_audio_for_section(section)
-                audio_segment = AudioSegment.from_mp3(io.BytesIO(audio_bytes))
-                cleaned_audio = self.remove_long_pauses(audio_segment)
-                sentence_audio += cleaned_audio
+                try:
+                    audio_bytes = self.fetch_audio_for_section(section)
+                    audio_segment = AudioSegment.from_mp3(io.BytesIO(audio_bytes))
+                    cleaned_audio = self.remove_long_pauses(audio_segment)
+                    sentence_audio += cleaned_audio
+                except ValueError as e:
+                    print(e)
+                    continue  # Skip this section and move to the next one
 
-            combined_audio += sentence_audio + \
-                AudioSegment.silent(duration=500)
+            combined_audio += sentence_audio + AudioSegment.silent(duration=500)
 
         if not output_filename:
             output_filename = input(
                 "Enter the output filename (default is processed_audio.mp3): ") or "processed_audio.mp3"
         combined_audio.export(output_filename, format="mp3")
         print(f"Audio data saved as {output_filename}.")
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
