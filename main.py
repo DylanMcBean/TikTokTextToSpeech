@@ -93,26 +93,43 @@ class TextToAudioConverter:
         return re.split(TextToAudioConverter.SPLIT_PATTERN, text)
 
     @staticmethod
-    def get_sections_from_sentence(sentence: str) -> List[str]:
+    def get_sections_from_sentence(sentence: str, max_length: int = 300, min_length: int = 10) -> List[str]:
         words = sentence.split()
         sections = []
         section = ''
+        
         for word in words:
-            if len(section + word) <= 300:
+            if len(section) + len(word) + 1 <= max_length:
                 section += word + ' '
             else:
-                sections.append(section.strip())
-                section = word + ' '
-        sections.append(section.strip())
+                if len(section.strip()) >= min_length:
+                    sections.append(section.strip())
+                    section = word + ' '
+                else:
+                    next_section = section + word + ' '
+                    if len(next_section.strip()) <= max_length:
+                        section = next_section
+                    else:
+                        sections.append(section.strip())
+                        section = word + ' '
+                        
+        if section.strip() and len(section.strip()) >= min_length:
+            sections.append(section.strip())
+        elif sections and len(section.strip()) < min_length:
+            sections[-1] = sections[-1] + ' ' + section.strip()
+            
         return sections
 
     def fetch_audio_for_section(self, section: str, retries: int = 3) -> bytes:
         for _ in range(retries):
-            request = requests.post(self.API_ENDPOINT, json={
-                                    "text": section, "voice": self.VOICE})
-            response = request.json()
-            if response.get('data'):
-                return base64.b64decode(response['data'])
+            try:
+                request = requests.post(self.API_ENDPOINT, json={
+                                        "text": section, "voice": self.VOICE})
+                response = request.json()
+                if response.get('data'):
+                    return base64.b64decode(response['data'])
+            except:
+                pass # lets hgope this failed audio clip is not too noticable, hopefully should not happen tho
             time.sleep(1)
         raise ValueError(f"Failed to fetch audio for section: {section}")
 
@@ -186,7 +203,6 @@ class TextToAudioConverter:
                 "Enter the output filename (default is processed_audio.mp3): ") or "processed_audio.mp3"
         combined_audio.export(output_filename, format="mp3")
         print(f"Audio data saved as {output_filename}.")
-
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
